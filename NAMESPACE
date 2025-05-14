@@ -1,1 +1,4 @@
-exportPattern("^[[:alpha:]]+")
+# Export the function for external use
+export(hello)
+export(fun2)
+export(fun3)

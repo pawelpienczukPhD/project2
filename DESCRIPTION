@@ -1,16 +1,16 @@
 Package: project2
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Select Stocks to Buy Based on WSE Data
 Version: 0.1.0
-Authors@R: c(
-    person(
-      "Jane", "Doe",
-      email = "jane@example.com",
-      role = c("aut", "cre")
-    )
-  )
-Description: More about what it does (maybe more than one line).
-    Continuation lines should be indented.
-License: What license is it under?
+Author: Pawel
+Maintainer: pawel.pienczuk2.dokt@pw.edu.pl
+Description: This package provides a function to download daily closing stock prices from the Warsaw Stock Exchange (WSE) and generate a comparative plot.
+License: What license it uses (e.g., MIT)
+Imports:
+    ggplot2,
+    tidyr,
+    lubridate
 Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
 LazyData: true
+RoxygenNote: 7.3.2

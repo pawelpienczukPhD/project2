@@ -32,17 +32,14 @@
 
 #' https://github.com/m-dadej/Downloading-and-aggregating-stocks
 #' Dependencies:
-library(lubridate)
-library(ggplot2)
-library(tidyr)
 
 what_to_buy <- function(wektor, from, to){
 source("https://raw.githubusercontent.com/m-dadej/Downloading-and-aggregating-stocks/master/getWSE.R")
 
   stopifnot(
     is.character(wektor),
-    is.character(from), !is.na(ymd(from)),
-    is.character(to), !is.na(ymd(to))
+    is.character(from), !is.na(lubridate::ymd(from)),
+    is.character(to), !is.na(lubridate::ymd(to))
   )
 
 df <- getWSE(tickers = wektor,
@@ -51,7 +48,7 @@ df <- getWSE(tickers = wektor,
                      to = to,
                      freq = "daily",
                      corpo_action = c("div", "split"))
-p <- ggplot()  # empty plot, aes conflict
+p <- ggplot2::ggplot()  # empty plot, aes conflict
 x_col <- df[[1]]
 x_label <- names(df)[1]
 

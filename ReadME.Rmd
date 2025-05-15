@@ -1,3 +1,4 @@
+
 ---
 title: "Documentation"
 author: "Pawel Pienczuk"
@@ -9,79 +10,95 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Introduction
+# Documentation for what_to_buy()
 
-This document provides instructions on how to use the custom R functions included in this package. The package contains functions for analyzing stock data from the Warsaw Stock Exchange (WSE) and for analyzing parts distribution in a manufacturing context.
+This function downloads stock data from the Warsaw Stock Exchange and plots closing prices.
 
-
-
-## Functions Included
-
-This package currently includes the following functions:
-
-* `what_to_buy()`: Downloads and plots WSE stock data.
-* `parts_distribution()`: Calculates and visualizes part variants distribution.
-* `analyze_parts_distribution()`: Analyzes results from `parts_distribution()`.
-
-## Getting Started
-
-To use these functions:
-
-1.  Ensure you have R and RStudio installed.
-2.  Install the required packages: `ggplot2`, `tidyr`, `dplyr`, `lubridate`, `broom`, `scales`, `testthat`. You can install them using `install.packages()`.
-3.  Source the function definitions into your R session. If these functions are part of a formal R package, you would install and load the package. If they are in `.R` files, use the `source()` function.
-4.  Run the examples provided in the code chunks above to see how the functions work.
-
-
-## Function 1: `what_to_buy()`
-
-This function allows you to download historical closing price data for specified WSE tickers within a given date range and visualize the trends.
-
-### Usage
-
-To use `what_to_buy()`, you need to provide a vector of ticker symbols and the start and end dates for the data download.
-
-```{r what_to_buy_example, message=FALSE, warning=FALSE}
-# Note: The getWSE script is sourced directly from GitHub in the function code.
-# This example assumes you have internet access to download the data.
-
-# Define tickers and date range
-tickers <- c("PKN", "CDR", "PKO")
-start_date <- "2023-01-01"
-end_date <- "2023-12-31"
-
-# Call the function
-# Assuming the function definition is available in the R environment
-# For this Rmd to work standalone, you might need to source the function definition first:
-# source("your_package_file.R") # Replace with the actual path to your R file
-
-# --- Include the function definition here for a self-contained Rmd example ---
-# (In a real package, this would not be necessary as the function would be loaded)
-
-# Run the function
-what_to_buy_results <- what_to_buy(tickers, from = start_date, to = end_date)
-
-# The function returns a list with the data frame and the plot
-stock_data_df <- what_to_buy_results[[1]]
-stock_plot <- what_to_buy_results[[2]]
-
-# Display the first few rows of the data frame
-print("Stock Data (first 5 rows):")
-knitr::kable(head(stock_data_df))
-
-# Display the plot
-print("Stock Price Plot:")
-stock_plot
+## Usage
+```r
+what_to_buy(wektor = c("PKN", "CDR"), from = "2023-01-01", to = "2023-12-31")
 ```
+
+## Requirements
+- `lubridate`
+- `ggplot2`
+- `tidyr`
+
+## Example
+
+```{r eval=FALSE}
+install.packages("lubridate")
+install.packages("ggplot2")
+install.packages("tidyr")
+```
+
+```{r eval=FALSE}
+source("https://raw.githubusercontent.com/m-dadej/Downloading-and-aggregating-stocks/master/getWSE.R")
+
+what_to_buy <- function(wektor, from, to){
+  stopifnot(
+    is.character(wektor),
+    is.character(from), !is.na(lubridate::ymd(from)),
+    is.character(to), !is.na(lubridate::ymd(to))
+  )
+
+  df <- getWSE(
+    tickers = wektor,
+    ohlcv = "Close",
+    from = from,
+    to = to,
+    freq = "daily",
+    corpo_action = c("div", "split")
+  )
+
+  p <- ggplot2::ggplot()
+  x_col <- df[[1]]
+  x_label <- names(df)[1]
+
+  for (i in 2:ncol(df)) {
+    seria_df <- data.frame(
+      x = x_col,
+      y = df[[i]],
+      seria = names(df)[i]
+    )
+    p <- p + ggplot2::geom_line(data = seria_df, ggplot2::aes(x = x, y = y, color = seria))
+  }
+
+  p <- p + ggplot2::labs(x = x_label, y = "Wartość", color = "Seria") +
+    ggplot2::theme_minimal()
+  return(list(df, p))
+}
+```
+
+## Usage
+```{r message=FALSE, warning=FALSE}
+shares_to_consider <- c("xtb", "pko", "dbc")
+startdate <- "2022-02-01"
+enddate <- "2024-12-13"
+
+output <- what_to_buy(shares_to_consider, startdate, enddate)
+
+#Display the plot:
+print("Shares values:")
+plot <- output[[2]]
+plot
+
+#Display the data frame with values for each day:
+sharesdata <- output[[1]]
+knitr::kable(head(sharesdata), caption = "Shares data for further analysis:")
+
+```
+
+
+## Output
+
+The function returns a list with:
+1. A data frame (`df`) of the downloaded closing prices.
+2. A ggplot object (`p`) showing the trends for each ticker.
 
 ### Disclaimer
 
 This function relies on the external `getWSE()` script by m-dadej, available on GitHub. You can find the source script here: [getWSE.R on GitHub](https://github.com/m-dadej/Downloading-and-aggregating-stocks/blob/master/getWSE.R). The data includes corporate actions.
-
-
-## Including Plots
-
-You can also embed plots, for example:
 
 ## Function 2: `parts_distribution()`
 
@@ -90,6 +107,7 @@ This function calculates and visualizes the distribution of part variants within
 ### Usage
 
 Provide the number of part types, the total batch size, and the expected missing rate.
+
 
 ```{r parts_distribution_example, message=FALSE, warning=FALSE}
 # --- Include the function definition here for a self-contained Rmd example ---
@@ -114,7 +132,6 @@ knitr::kable(parts_results$data_frame)
 # Display the sum in batch
 print(paste("Total parts in technological distribution:", parts_results$sum_in_batch))
 ```
-
 
 ## Function 3: `analyze_parts_distribution()`
 
@@ -155,4 +172,3 @@ knitr::kable(analysis_results$technological_probabilities)
 print("Parts Distribution Plot with Normal Fit:")
 analysis_results$plot_with_normal_fit
 ```
-

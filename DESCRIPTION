@@ -9,7 +9,10 @@ License: What license it uses (e.g., MIT)
 Imports:
     ggplot2,
     tidyr,
-    lubridate
+    lubridate,
+    broom,
+    scales,
+    testthat
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 LazyData: true

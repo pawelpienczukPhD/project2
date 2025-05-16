@@ -1,4 +1,4 @@
 # Export the function for external use
-export(hello)
-export(fun2)
-export(fun3)
+export(what_to_buy)
+export(parts_distribution)
+export(analyze_parts_distribution)

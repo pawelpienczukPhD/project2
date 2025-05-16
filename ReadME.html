@@ -361,10 +361,6 @@ display: none;
 <h1>Documentation for what_to_buy()</h1>
 <p>This function downloads stock data from the Warsaw Stock Exchange and
 plots closing prices.</p>
-<div id="usage" class="section level2">
-<h2>Usage</h2>
-<pre class="r"><code>what_to_buy(wektor = c(&quot;PKN&quot;, &quot;CDR&quot;), from = &quot;2023-01-01&quot;, to = &quot;2023-12-31&quot;)</code></pre>
-</div>
 <div id="requirements" class="section level2">
 <h2>Requirements</h2>
 <ul>
@@ -375,9 +371,6 @@ plots closing prices.</p>
 </div>
 <div id="example" class="section level2">
 <h2>Example</h2>
-<pre class="r"><code>install.packages(&quot;lubridate&quot;)
-install.packages(&quot;ggplot2&quot;)
-install.packages(&quot;tidyr&quot;)</code></pre>
 <pre class="r"><code>source(&quot;https://raw.githubusercontent.com/m-dadej/Downloading-and-aggregating-stocks/master/getWSE.R&quot;)
 
 what_to_buy &lt;- function(wektor, from, to){
@@ -414,7 +407,7 @@ what_to_buy &lt;- function(wektor, from, to){
   return(list(df, p))
 }</code></pre>
 </div>
-<div id="usage-1" class="section level2">
+<div id="usage" class="section level2">
 <h2>Usage</h2>
 <pre class="r"><code>shares_to_consider &lt;- c(&quot;xtb&quot;, &quot;pko&quot;, &quot;dbc&quot;)
 startdate &lt;- &quot;2022-02-01&quot;
@@ -497,7 +490,7 @@ on GitHub</a>. The data includes corporate actions.</p>
 <h2>Function 2: <code>parts_distribution()</code></h2>
 <p>This function calculates and visualizes the distribution of part
 variants within a manufacturing batch, considering a missing rate.</p>
-<div id="usage-2" class="section level3">
+<div id="usage-1" class="section level3">
 <h3>Usage</h3>
 <p>Provide the number of part types, the total batch size, and the
 expected missing rate.</p>
@@ -634,7 +627,7 @@ print(paste(&quot;Total parts in technological distribution:&quot;, parts_result
 and performs further analysis, including descriptive statistics,
 normality checks, and fitting a normal distribution curve to the
 technological data plot.</p>
-<div id="usage-3" class="section level3">
+<div id="usage-2" class="section level3">
 <h3>Usage</h3>
 <p>Pass the list output from <code>parts_distribution()</code> to this
 function.</p>

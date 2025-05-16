@@ -14,23 +14,12 @@ knitr::opts_chunk$set(echo = TRUE)
 
 This function downloads stock data from the Warsaw Stock Exchange and plots closing prices.
 
-## Usage
-```r
-what_to_buy(wektor = c("PKN", "CDR"), from = "2023-01-01", to = "2023-12-31")
-```
-
 ## Requirements
 - `lubridate`
 - `ggplot2`
 - `tidyr`
 
 ## Example
-
-```{r eval=FALSE}
-install.packages("lubridate")
-install.packages("ggplot2")
-install.packages("tidyr")
-```
 
 ```{r eval=FALSE}
 source("https://raw.githubusercontent.com/m-dadej/Downloading-and-aggregating-stocks/master/getWSE.R")
@@ -71,7 +60,7 @@ what_to_buy <- function(wektor, from, to){
 ```
 
 ## Usage
-```{r message=FALSE, warning=FALSE}
+```{r what_to_buy_example, message=FALSE, warning=FALSE}
 shares_to_consider <- c("xtb", "pko", "dbc")
 startdate <- "2022-02-01"
 enddate <- "2024-12-13"

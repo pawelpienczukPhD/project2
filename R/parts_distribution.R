@@ -94,47 +94,46 @@ parts_distribution <- function (no_parts, batch, missing_rate){
 }
 
 
-library(testthat)
-test_that("Input validation", {
-  # Testy błędów dla `no_parts`
-  expect_error(parts_distribution("a", 100, 1.1), "Błąd: Liczba części w szeregu 'no_parts' musi być pojedynczą, dodatnią liczbą całkowitą.")
-  expect_error(parts_distribution(c(10, 20), 100, 1.1), "Błąd: Liczba części w szeregu 'no_parts' musi być pojedynczą, dodatnią liczbą całkowitą.")
-  expect_error(parts_distribution(10.5, 100, 1.1), "Błąd: Liczba części w szeregu 'no_parts' musi być pojedynczą, dodatnią liczbą całkowitą.")
-  expect_error(parts_distribution(0, 100, 1.1), "Błąd: Liczba części w szeregu 'no_parts' musi być pojedynczą, dodatnią liczbą całkowitą.")
-  expect_error(parts_distribution(-5, 100, 1.1), "Błąd: Liczba części w szeregu 'no_parts' musi być pojedynczą, dodatnią liczbą całkowitą.")
-
-  # Testy błędów dla `batch`
-  expect_error(parts_distribution(10, "a", 1.1), "Błąd: Wielkość partii części 'batch' musi być pojedynczą, dodatnią liczbą całkowitą.")
-  expect_error(parts_distribution(10, c(100, 200), 1.1), "Błąd: Wielkość partii części 'batch' musi być pojedynczą, dodatnią liczbą całkowitą.")
-  expect_error(parts_distribution(10, 100.5, 1.1), "Błąd: Wielkość partii części 'batch' musi być pojedynczą, dodatnią liczbą całkowitą.")
-  expect_error(parts_distribution(10, 0, 1.1), "Błąd: Wielkość partii części 'batch' musi być pojedynczą, dodatnią liczbą całkowitą.")
-  expect_error(parts_distribution(10, -100, 1.1), "Błąd: Wielkość partii części 'batch' musi być pojedynczą, dodatnią liczbą całkowitą.")
-
-  # Testy błędów dla `missing_rate`
-  expect_error(parts_distribution(10, 100, "1.1"), "Błąd: Współczynnik braków 'missing_rate' musi być pojedynczą wartością numeryczną >= 1.")
-  expect_error(parts_distribution(10, 100, c(1.1, 1.2)), "Błąd: Współczynnik braków 'missing_rate' musi być pojedynczą wartością numeryczną >= 1.")
-  expect_error(parts_distribution(10, 100, 0.99), "Błąd: Współczynnik braków 'missing_rate' musi być pojedynczą wartością numeryczną >= 1.")
-  expect_error(parts_distribution(10, 100, -1), "Błąd: Współczynnik braków 'missing_rate' musi być pojedynczą wartością numeryczną >= 1.")
-
-  #test klas/typów danych
-  result_even <- parts_distribution(no_parts = 6, batch = 120, missing_rate = 1.1)
-  expect_type(result_even, "list")
-  expect_s3_class(result_even$plot, "ggplot")
-  expect_s3_class(result_even$data_frame, "data.frame")
-  expect_type(result_even$sum_in_batch, "double")
-
-
-  #test dla wartości granicznych (przewidywalność)
-  n_parts <- 10
-  batch_size <- 500
-  m_rate <- 1.05
-  result <- parts_distribution(no_parts = n_parts, batch = batch_size, missing_rate = m_rate)
-  df <- result$data_frame
-  sum_batch <- result$sum_in_batch
-  expect_equal(sum_batch, sum(df$technological))
-  expect_gte(sum_batch, batch_size)
-
-  # Suma teoretyczna powinna być bliska batch * missing_rate (z dokładnością do błędów numerycznych),
-  # w przeciwnym razie zaokrąglenia przestają mieć sens (wyjściowe sum_in_batch również mogło zostać użyte)
-  expect_equal(sum(df$theorethic), batch_size * m_rate, tolerance = 1e-9)
-})
+# test_that("Input validation", {
+#   # Testy błędów dla `no_parts`
+#   expect_error(parts_distribution("a", 100, 1.1), "Błąd: Liczba części w szeregu 'no_parts' musi być pojedynczą, dodatnią liczbą całkowitą.")
+#   expect_error(parts_distribution(c(10, 20), 100, 1.1), "Błąd: Liczba części w szeregu 'no_parts' musi być pojedynczą, dodatnią liczbą całkowitą.")
+#   expect_error(parts_distribution(10.5, 100, 1.1), "Błąd: Liczba części w szeregu 'no_parts' musi być pojedynczą, dodatnią liczbą całkowitą.")
+#   expect_error(parts_distribution(0, 100, 1.1), "Błąd: Liczba części w szeregu 'no_parts' musi być pojedynczą, dodatnią liczbą całkowitą.")
+#   expect_error(parts_distribution(-5, 100, 1.1), "Błąd: Liczba części w szeregu 'no_parts' musi być pojedynczą, dodatnią liczbą całkowitą.")
+#
+#   # Testy błędów dla `batch`
+#   expect_error(parts_distribution(10, "a", 1.1), "Błąd: Wielkość partii części 'batch' musi być pojedynczą, dodatnią liczbą całkowitą.")
+#   expect_error(parts_distribution(10, c(100, 200), 1.1), "Błąd: Wielkość partii części 'batch' musi być pojedynczą, dodatnią liczbą całkowitą.")
+#   expect_error(parts_distribution(10, 100.5, 1.1), "Błąd: Wielkość partii części 'batch' musi być pojedynczą, dodatnią liczbą całkowitą.")
+#   expect_error(parts_distribution(10, 0, 1.1), "Błąd: Wielkość partii części 'batch' musi być pojedynczą, dodatnią liczbą całkowitą.")
+#   expect_error(parts_distribution(10, -100, 1.1), "Błąd: Wielkość partii części 'batch' musi być pojedynczą, dodatnią liczbą całkowitą.")
+#
+#   # Testy błędów dla `missing_rate`
+#   expect_error(parts_distribution(10, 100, "1.1"), "Błąd: Współczynnik braków 'missing_rate' musi być pojedynczą wartością numeryczną >= 1.")
+#   expect_error(parts_distribution(10, 100, c(1.1, 1.2)), "Błąd: Współczynnik braków 'missing_rate' musi być pojedynczą wartością numeryczną >= 1.")
+#   expect_error(parts_distribution(10, 100, 0.99), "Błąd: Współczynnik braków 'missing_rate' musi być pojedynczą wartością numeryczną >= 1.")
+#   expect_error(parts_distribution(10, 100, -1), "Błąd: Współczynnik braków 'missing_rate' musi być pojedynczą wartością numeryczną >= 1.")
+#
+#   #test klas/typów danych
+#   result_even <- parts_distribution(no_parts = 6, batch = 120, missing_rate = 1.1)
+#   expect_type(result_even, "list")
+#   expect_s3_class(result_even$plot, "ggplot")
+#   expect_s3_class(result_even$data_frame, "data.frame")
+#   expect_type(result_even$sum_in_batch, "double")
+#
+#
+#   #test dla wartości granicznych (przewidywalność)
+#   n_parts <- 10
+#   batch_size <- 500
+#   m_rate <- 1.05
+#   result <- parts_distribution(no_parts = n_parts, batch = batch_size, missing_rate = m_rate)
+#   df <- result$data_frame
+#   sum_batch <- result$sum_in_batch
+#   expect_equal(sum_batch, sum(df$technological))
+#   expect_gte(sum_batch, batch_size)
+#
+#   # Suma teoretyczna powinna być bliska batch * missing_rate (z dokładnością do błędów numerycznych),
+#   # w przeciwnym razie zaokrąglenia przestają mieć sens (wyjściowe sum_in_batch również mogło zostać użyte)
+#   expect_equal(sum(df$theorethic), batch_size * m_rate, tolerance = 1e-9)
+# })

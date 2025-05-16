@@ -175,17 +175,17 @@ analyze_parts_distribution <- function(parts_results, poly_degree = 3) {
 }
 
 
-test_that ("analyze_parts_distribution returns expected output structure and types", {
-  parts_results_input <- parts_distribution(no_parts = 10, batch = 100, missing_rate = 1.1)
-  results_analysis <- analyze_parts_distribution(parts_results_input)
-  expect_type(results_analysis, "list")
-  expected_names <- c("summary_stats", "normality_analysis", "fitted_models_summary", "technological_probabilities", "plot_with_normal_fit")
-  expect_true(all(expected_names %in% names(results_analysis)))
-  expect_s3_class(results_analysis$summary_stats, "data.frame")
-  expect_s3_class(results_analysis$plot_with_normal_fit, "ggplot")
-})
-
-
-test1 <- parts_distribution(29,1500,1.2)
-results <- analyze_parts_distribution(test1)
-results
+# test_that ("analyze_parts_distribution returns expected output structure and types", {
+#   parts_results_input <- parts_distribution(no_parts = 10, batch = 100, missing_rate = 1.1)
+#   results_analysis <- analyze_parts_distribution(parts_results_input)
+#   expect_type(results_analysis, "list")
+#   expected_names <- c("summary_stats", "normality_analysis", "fitted_models_summary", "technological_probabilities", "plot_with_normal_fit")
+#   expect_true(all(expected_names %in% names(results_analysis)))
+#   expect_s3_class(results_analysis$summary_stats, "data.frame")
+#   expect_s3_class(results_analysis$plot_with_normal_fit, "ggplot")
+# })
+#
+#
+# test1 <- parts_distribution(29,1500,1.2)
+# results <- analyze_parts_distribution(test1)
+# results

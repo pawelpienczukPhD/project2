@@ -3,7 +3,7 @@ Type: Package
 Title: Select Stocks to Buy Based on WSE Data
 Version: 0.1.0
 Author: Pawel
-Maintainer: pawel.pienczuk2.dokt@pw.edu.pl
+Maintainer: <pawel.pienczuk2.dokt@pw.edu.pl>
 Description: This package provides a function to download daily closing stock prices from the Warsaw Stock Exchange (WSE) and generate a comparative plot.
 License: What license it uses (e.g., MIT)
 Imports:
